@@ -7,22 +7,16 @@
 import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import CKBox from '@ckeditor/ckeditor5-ckbox/src/ckbox';
-import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
-import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
-import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
-import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 import Indent from '@ckeditor/ckeditor5-indent/src/indent';
@@ -35,34 +29,29 @@ import PictureEditing from '@ckeditor/ckeditor5-image/src/pictureediting';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
-import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtmlsupport';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
+
+import { Plugin, icons } from 'ckeditor5/src/core';
+import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
 	Essentials,
-	UploadAdapter,
 	Autoformat,
 	Bold,
 	Italic,
 	BlockQuote,
-	CKBox,
-	CKFinder,
-	CloudServices,
-	EasyImage,
 	Heading,
 	Image,
 	ImageCaption,
 	ImageStyle,
 	ImageToolbar,
-	ImageUpload,
 	ImageResize,
-	ImageInsert,
 	LinkImage,
 	AutoImage,
 	Indent,
@@ -78,7 +67,8 @@ ClassicEditor.builtinPlugins = [
 	Alignment,
 	GeneralHtmlSupport,
 	SourceEditing,
-	HtmlEmbed
+	HtmlEmbed,
+	RFMImage
 ];
 
 // Editor configuration.
@@ -97,7 +87,7 @@ ClassicEditor.defaultConfig = {
 			'outdent',
 			'indent',
 			'|',
-			'insertImage',
+			'rfm_image',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',
@@ -131,3 +121,25 @@ ClassicEditor.defaultConfig = {
 	// This value must be kept in sync with the language defined in webpack.config.js.
 	language: 'en'
 };
+
+class RFMImage extends Plugin {
+    init() {
+        const editor = this.editor;
+
+        // The button must be registered among the UI components of the editor
+        // to be displayed in the toolbar.
+        editor.ui.componentFactory.add( 'rfm_image', () => {
+            // The button will be an instance of ButtonView.
+            const button = new ButtonView();
+
+            button.set( {
+                label: 'Place Image',
+                icon: icons.image,
+                class: 'rfm_image',
+                tooltip: true
+            } );
+
+            return button;
+        } );
+    }
+}
