@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>CKEditor 5 Quick start guide</title>
+    </head>
+    <body style="padding-top: 20px;">
+        <label>Content</label>
+        <div id="editor" style="border:1px solid #555;">
+            <p>The editor content goes here.</p>
+        </div>
+
+        <script src="./build/ckeditor.js"></script>
+        <script>
+            InlineEditor
+            .create( document.querySelector( '#editor' ))
+            .catch( error => {
+                console.log( error );
+            } );
+        </script>
+    </body>
+</html>
